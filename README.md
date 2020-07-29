@@ -1,1 +1,5 @@
-Sorting algorithms
+### Sorting algorithms
+
+Current sorts:
+- quick sort
+
