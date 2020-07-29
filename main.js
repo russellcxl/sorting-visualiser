@@ -1,16 +1,18 @@
 //==================== ui board set-up ====================//
 
 let bars = []
-let numOfBars = 70;
+let numOfBars = 20;
 let $container = document.querySelector(".main-container");
 let $randomiser = document.querySelector(".button-randomise");
 let $sorter = document.querySelector(".button-sort");
+let $bars = document.getElementsByClassName("bar");
 
+//default bars
 for (let i = 0; i < numOfBars; i++) {
     let $newBar = document.createElement("div");
     $newBar.style.height = `${Math.random() * 90}%`;
-    $newBar.className = "bar mr-1";
-    bars.push(parseFloat($newBar.style.height));
+    $newBar.className = "bar";
+    bars.push($newBar);
     $container.append($newBar);
 }
 
@@ -21,50 +23,78 @@ $randomiser.addEventListener("click", function() {
     for (let i = 0; i < numOfBars; i++) {
         let $newBar = document.createElement("div");
         $newBar.style.height = `${Math.random() * 90}%`;
-        $newBar.className = "bar mr-1";
-        bars.push(parseFloat($newBar.style.height));
+        $newBar.className = "bar";
+        bars.push($newBar);
         $container.append($newBar);
     }
 });
 
 $sorter.addEventListener("click", function() {
+    $bars = document.getElementsByClassName("bar");
     quickSort(bars);
-    let $bars = document.getElementsByClassName("bar");
-    for (let i = 0; i < $bars.length; i++) {
-        $bars[i].style.height = `${bars[i]}%`;        
-    }
+    // for (let i = 0; i < $bars.length; i++) {
+    //     $bars[i].style.height = `${bars[i]}%`;        
+    // }
 });
+
 
 //==================== quick sort O(N^2) ====================//
 
+
+//#f8e9a1
+//visualisation:
+//last bar pink, all bars before yellow, yellow to white as loop runs, last bar to new index + white
+//recursive quickSorts should run concurrently Promise.all
+
 //taking pivot as last element
 //done when start index = end index i.e. no array left to sort
-function quickSort(arr, start = 0 , end = arr.length - 1) {
+async function quickSort(arr, start = 0 , end = arr.length - 1) {
     if (start >= end) return;
     
-    let index = partition(arr, start, end);
-    quickSort(arr, index + 1, end); //starts sorting for bigger half
-    quickSort(arr, start, index - 1); //start sorting for smaller half
+    $bars[end].style.background = "#f76c6c";
+
+    let index = await partition(arr, start, end);
+
+    // await quickSort(arr, index + 1, end); //starts sorting for bigger half
+    // await quickSort(arr, start, index - 1); //start sorting for smaller half
 }
 
 //find index of where the pivot number lands
-function partition(arr, start, end) {
+async function partition(arr, start, end) {
     let index = start;
-    let pivotValue = arr[end]
+    let pivotValue = parseFloat(arr[end].style.height);
+    
+    //color all before [end] yellow
     for (let i = start; i < end; i++) {
-        if (arr[i] < pivotValue) {
+        $bars[i].style.background = "#f8e9a1";   
+    }
+
+    for (let i = start; i < end; i++) {
+        await sleep(300)
+        $bars[i].style.background = "#fff";
+
+        if (parseFloat(arr[i].style.height) < pivotValue) {
             swap(arr, index, i)
             index++;
         }
     }
+    await sleep(100)
     swap(arr, index, end)
-    return index;
+    Promise.resolve(index);
 }
 
-//swap elements at index i and j, where i > j
+//swap the heights of bars at index i and j, where i > j
 function swap(arr, i, j) {
+    //swap bars in array
     let extracted = arr.splice(j, 1)
     arr.splice(i, 0, extracted[0]);
+
+    //swap bars in html
+    $container.insertBefore($container.childNodes[j], $container.childNodes[i]);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 //==================== visualisation ====================//
