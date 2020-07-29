@@ -1,7 +1,7 @@
 //==================== ui board set-up ====================//
 
 let bars = []
-let numOfBars = 80;
+let numOfBars = 140;
 let $container = document.querySelector(".main-container");
 let $randomiser = document.querySelector(".button-randomise");
 let $sorter = document.querySelector(".button-sort");
