@@ -1,4 +1,35 @@
-//==================== quick sort ====================//
+//==================== ui board set-up ====================//
+
+let bars = []
+let numOfBars = 70;
+let $container = document.querySelector(".main-container");
+let $randomiser = document.querySelector(".button-randomise");
+let $sorter = document.querySelector("button-sort");
+
+for (let i = 0; i < numOfBars; i++) {
+    let $newBar = document.createElement("div");
+    $newBar.style.height = `${Math.random() * 90}%`;
+    $newBar.className = "bar mr-1";
+    bars.push($newBar);
+    $container.append($newBar);
+}
+
+$randomiser.addEventListener("click", function() {
+    $container.innerHTML = "";
+    bars = [];
+
+    for (let i = 0; i < numOfBars; i++) {
+        let $newBar = document.createElement("div");
+        $newBar.style.height = `${Math.random() * 90}%`;
+        $newBar.className = "bar mr-1";
+        bars.push($newBar);
+        $container.append($newBar);
+    }
+});
+
+
+
+//==================== quick sort O(N^2) ====================//
 
 //taking pivot as last element
 //done when start index = end index i.e. no array left to sort
