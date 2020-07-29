@@ -1,7 +1,7 @@
 //==================== ui board set-up ====================//
 
 let bars = []
-let numOfBars = 20;
+let numOfBars = 80;
 let $container = document.querySelector(".main-container");
 let $randomiser = document.querySelector(".button-randomise");
 let $sorter = document.querySelector(".button-sort");
@@ -32,19 +32,14 @@ $randomiser.addEventListener("click", function() {
 $sorter.addEventListener("click", function() {
     $bars = document.getElementsByClassName("bar");
     quickSort(bars);
-    // for (let i = 0; i < $bars.length; i++) {
-    //     $bars[i].style.height = `${bars[i]}%`;        
-    // }
 });
 
 
 //==================== quick sort O(N^2) ====================//
 
 
-//#f8e9a1
 //visualisation:
 //last bar pink, all bars before yellow, yellow to white as loop runs, last bar to new index + white
-//recursive quickSorts should run concurrently Promise.all
 
 //taking pivot as last element
 //done when start index = end index i.e. no array left to sort
@@ -55,8 +50,8 @@ async function quickSort(arr, start = 0 , end = arr.length - 1) {
 
     let index = await partition(arr, start, end);
 
-    // await quickSort(arr, index + 1, end); //starts sorting for bigger half
-    // await quickSort(arr, start, index - 1); //start sorting for smaller half
+    quickSort(arr, index + 1, end); //starts sorting for bigger half
+    quickSort(arr, start, index - 1); //start sorting for smaller half
 }
 
 //find index of where the pivot number lands
@@ -70,7 +65,7 @@ async function partition(arr, start, end) {
     }
 
     for (let i = start; i < end; i++) {
-        await sleep(300)
+        await sleep(30)
         $bars[i].style.background = "#fff";
 
         if (parseFloat(arr[i].style.height) < pivotValue) {
@@ -78,9 +73,10 @@ async function partition(arr, start, end) {
             index++;
         }
     }
-    await sleep(100)
+    await sleep(30)
+    $bars[end].style.background = "#fff";
     swap(arr, index, end)
-    Promise.resolve(index);
+    return index;
 }
 
 //swap the heights of bars at index i and j, where i > j
