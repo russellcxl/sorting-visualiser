@@ -44,3 +44,24 @@ body {
     background: #374785;
     color: #fff;
 }
+ a:hover {
+    color: #F76C6C;
+ }
+
+.slider {
+    width: 50vw;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    background: #F76C6C;
+}
+
+input[type=range]::-moz-range-thumb {
+    background: #F76C6C;
+}
+
+input[type=range]::-ms-thumb {
+    background: #F76C6C;
+}
+
+
