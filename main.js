@@ -44,7 +44,10 @@ $sorter.addEventListener("click", function() {
 //taking pivot as last element
 //done when start index = end index i.e. no array left to sort
 async function quickSort(arr, start = 0 , end = arr.length - 1) {
-    if (start >= end) return;
+
+    if (start >= end) {
+        return;
+    }
     
     $bars[end].style.background = "#f76c6c";
 
