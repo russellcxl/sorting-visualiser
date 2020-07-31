@@ -2,13 +2,14 @@
 
 let bars = []
 let numOfBars = 140;
+let pauseTime = 30;
+let barWidth = 0.5;
+let timer; //for disabling UI
 let $container = document.querySelector(".main-container");
 let $randomiser = document.querySelector(".button-randomise");
 let $sorter = document.querySelector(".button-sort");
 let $bars = document.getElementsByClassName("bar");
 let $size = document.querySelector(".bars-range");
-let pauseTime = 30;
-let barWidth = 0.5;
 
 
 //default bars
@@ -56,6 +57,9 @@ $randomiser.addEventListener("click", function() {
 
 $sorter.addEventListener("click", function() {
     $bars = document.getElementsByClassName("bar");
+    $size.disabled = true;
+    $randomiser.disabled = true;
+    $sorter.disabled = true;
     quickSort(bars);
 });
 
@@ -69,10 +73,7 @@ $sorter.addEventListener("click", function() {
 //taking pivot as last element
 //done when start index = end index i.e. no array left to sort
 async function quickSort(arr, start = 0 , end = arr.length - 1) {
-
-    if (start >= end) {
-        return;
-    }
+    if (start >= end) return;
     
     $bars[end].style.background = "#f76c6c";
 
@@ -95,6 +96,14 @@ async function partition(arr, start, end) {
     for (let i = start; i < end; i++) {
         await pause(pauseTime)
         $bars[i].style.background = "#fff";
+
+        //enables UI if there is no sorting for 2s
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            $size.disabled = false;
+            $randomiser.disabled = false;
+            $sorter.disabled = false;
+        }, 2000);
 
         if (parseFloat(arr[i].style.height) < pivotValue) {
             swap(arr, index, i)
