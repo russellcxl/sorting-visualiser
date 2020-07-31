@@ -6,27 +6,52 @@ let $container = document.querySelector(".main-container");
 let $randomiser = document.querySelector(".button-randomise");
 let $sorter = document.querySelector(".button-sort");
 let $bars = document.getElementsByClassName("bar");
+let $size = document.querySelector(".bars-range");
+let pauseTime = 30;
+let barWidth = 0.5;
+
 
 //default bars
 for (let i = 0; i < numOfBars; i++) {
     let $newBar = document.createElement("div");
     $newBar.style.height = `${Math.random() * 90}%`;
+    $newBar.style.width = `${barWidth}%`;
     $newBar.className = "bar";
     bars.push($newBar);
     $container.append($newBar);
 }
 
-$randomiser.addEventListener("click", function() {
+//populates container with bars
+function setBars() {
     $container.innerHTML = "";
-    bars = [];
+
+    $size.value <= 15 ? pauseTime = 800
+        : $size.value <= 35 ? pauseTime = 80
+        : pauseTime = 30;
+
+    $size.value <= 120 ? barWidth = 70/$size.value
+        : barWidth = 0.5;
 
     for (let i = 0; i < numOfBars; i++) {
         let $newBar = document.createElement("div");
         $newBar.style.height = `${Math.random() * 90}%`;
+        $newBar.style.width = `${barWidth}%`;
         $newBar.className = "bar";
         bars.push($newBar);
         $container.append($newBar);
     }
+}
+
+//adjust number of bars in container
+$size.addEventListener("input", function() {
+    numOfBars = $size.value; 
+    bars = [];
+    setBars();
+});
+
+$randomiser.addEventListener("click", function() {
+    bars = [];
+    setBars();
 });
 
 $sorter.addEventListener("click", function() {
@@ -68,7 +93,7 @@ async function partition(arr, start, end) {
     }
 
     for (let i = start; i < end; i++) {
-        await sleep(30)
+        await pause(pauseTime)
         $bars[i].style.background = "#fff";
 
         if (parseFloat(arr[i].style.height) < pivotValue) {
@@ -76,7 +101,7 @@ async function partition(arr, start, end) {
             index++;
         }
     }
-    await sleep(30)
+    await pause(pauseTime)
     $bars[end].style.background = "#fff";
     swap(arr, index, end)
     return index;
@@ -92,7 +117,7 @@ function swap(arr, i, j) {
     $container.insertBefore($container.childNodes[j], $container.childNodes[i]);
 }
 
-function sleep(ms) {
+function pause(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 

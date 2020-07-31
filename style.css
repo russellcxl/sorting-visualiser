@@ -12,8 +12,11 @@ body {
 }
 
 .bar {
-    width: 0.5%;
     background: whitesmoke;
+}
+
+.button-container {
+    margin-bottom: 70px;
 }
 
 .button-generic {
@@ -45,7 +48,7 @@ body {
     color: #fff;
 }
  a:hover {
-    color: #F76C6C;
+    color: #F76C6C !important;
  }
 
 .slider {
