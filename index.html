@@ -23,24 +23,18 @@
     </div>
 
     <!-- Sorter selector -->
-    <!-- <div class="container-select-sort d-flex justify-content-center mt-3">
-        <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
-            <label class="custom-control-label" for="customRadioInline1">Quick Sort</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
-            <label class="custom-control-label" for="customRadioInline2">Merge Sort</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input">
-            <label class="custom-control-label" for="customRadioInline3">Tree Sort</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="customRadioInline4" name="customRadioInline1" class="custom-control-input">
-            <label class="custom-control-label" for="customRadioInline4">Bubble Sort</label>
-        </div>
-    </div> -->
+    <div class="container-select-sort d-flex justify-content-center mt-3">
+        
+        <form id="sort-type">
+            <input class="radio-buttons" type="radio" name="sort-type" value="quick" checked>
+            <label class="labels mr-3">Quick Sort</label>
+
+            <input class="radio-buttons" type="radio" name="sort-type" value="merge">
+            <label class="labels">Merge Sort</label>
+        </form>
+        
+        
+    </div>
     
     <!-- Container for bars to be sorted -->
     <div class="main-container mx-auto my-3 d-flex"></div>

@@ -64,7 +64,9 @@ $sorter.addEventListener("click", function() {
 });
 
 
-//==================== quick sort O(N^2) ====================//
+
+//==================== quick sort ====================//
+
 
 
 //visualisation:
@@ -97,7 +99,7 @@ async function partition(arr, start, end) {
         await pause(pauseTime)
         $bars[i].style.background = "#fff";
 
-        //enables UI if there is no sorting for 2s
+        //resets timer for enabling buttons if sorter is still running
         clearTimeout(timer);
         timer = setTimeout(() => {
             $size.disabled = false;
@@ -116,7 +118,7 @@ async function partition(arr, start, end) {
     return index;
 }
 
-//swap the heights of bars at index i and j, where i > j
+//swap bars at index i and j, where i > j
 function swap(arr, i, j) {
     //swap bars in array
     let extracted = arr.splice(j, 1)
@@ -130,7 +132,36 @@ function pause(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-//==================== visualisation ====================//
 
+
+//==================== merge sort ====================//
+
+
+
+function mergeSort(arr) {
+    //stop mergesort from being called if array size is 1
+    if  (arr.length <= 1) return arr;
+
+    //halving the array
+    let middle = Math.floor(arr.length / 2);
+    let left = arr.slice(0, middle);
+    let right = arr.slice(middle);
+
+    return merge(mergeSort(left), mergeSort(right));
+}
+
+//merges 2 sorted arrays
+function merge(arr1, arr2) {
+    let finalArr = [];
+    while (arr1.length && arr2.length) {
+        if (arr1[0] < arr2[0]) {
+            finalArr.push(arr1.shift());
+        }
+        else {
+            finalArr.push(arr2.shift());
+        }
+    }
+    return finalArr.concat(arr1, arr2);
+}
 
 
