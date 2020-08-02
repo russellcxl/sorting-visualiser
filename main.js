@@ -1,6 +1,5 @@
 //==================== ui board set-up ====================//
 
-let bars = []
 let numOfBars = 140;
 let pauseTime = 30;
 let barWidth = 0.5;
@@ -10,6 +9,10 @@ let $randomiser = document.querySelector(".button-randomise");
 let $sorter = document.querySelector(".button-sort");
 let $bars = document.getElementsByClassName("bar");
 let $size = document.querySelector(".bars-range");
+let $sortTypes = document.getElementsByName("sort-type");
+let $type;
+let yellow = "#f8e9a1";
+let red = "#f76c6c";
 
 
 //default bars
@@ -18,8 +21,17 @@ for (let i = 0; i < numOfBars; i++) {
     $newBar.style.height = `${Math.random() * 90}%`;
     $newBar.style.width = `${barWidth}%`;
     $newBar.className = "bar";
-    bars.push($newBar);
     $container.append($newBar);
+}
+
+//loops through radio buttons to find the value of the checked one
+function determineSorter() {
+    for (let i = 0; i < $sortTypes.length; i++) {
+        if ($sortTypes[i].checked) {
+            $type = $sortTypes[i].value;
+            break;
+        }
+    }
 }
 
 //populates container with bars
@@ -38,30 +50,47 @@ function setBars() {
         $newBar.style.height = `${Math.random() * 90}%`;
         $newBar.style.width = `${barWidth}%`;
         $newBar.className = "bar";
-        bars.push($newBar);
         $container.append($newBar);
     }
 }
 
 //adjust number of bars in container
 $size.addEventListener("input", function() {
-    numOfBars = $size.value; 
-    bars = [];
+    numOfBars = $size.value;
     setBars();
 });
 
 $randomiser.addEventListener("click", function() {
-    bars = [];
     setBars();
 });
 
 $sorter.addEventListener("click", function() {
     $bars = document.getElementsByClassName("bar");
+
+    // disable buttons when sorter runs
     $size.disabled = true;
     $randomiser.disabled = true;
     $sorter.disabled = true;
-    quickSort(bars);
+
+    determineSorter(); 
+
+    $type === "quick" ? quickSort($bars) : mergeSort($bars);
 });
+
+//used for visualisation
+function pause() {
+    return new Promise(resolve => setTimeout(resolve, pauseTime));
+}
+
+//clears timer for re-enabling of buttons
+function timerReset() {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+        $size.disabled = false;
+        $randomiser.disabled = false;
+        $sorter.disabled = false;
+    }, 2000);
+}
 
 
 
@@ -69,8 +98,8 @@ $sorter.addEventListener("click", function() {
 
 
 
-//visualisation:
-//last bar pink, all bars before yellow, yellow to white as loop runs, last bar to new index + white
+//visualise: last bar pink, all bars before yellow, yellow to white as loop runs, last bar to new index + white
+
 
 //taking pivot as last element
 //done when start index = end index i.e. no array left to sort
@@ -78,12 +107,12 @@ async function quickSort(arr, start = 0 , end = arr.length - 1) {
     if (start >= end) return;
     
     $bars[end].style.background = "#f76c6c";
-
     let index = await partition(arr, start, end);
 
     quickSort(arr, index + 1, end); //starts sorting for bigger half
     quickSort(arr, start, index - 1); //start sorting for smaller half
 }
+
 
 //find index of where the pivot number lands
 async function partition(arr, start, end) {
@@ -96,40 +125,26 @@ async function partition(arr, start, end) {
     }
 
     for (let i = start; i < end; i++) {
-        await pause(pauseTime)
+        await pause()
         $bars[i].style.background = "#fff";
 
-        //resets timer for enabling buttons if sorter is still running
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            $size.disabled = false;
-            $randomiser.disabled = false;
-            $sorter.disabled = false;
-        }, 2000);
+        timerReset();
 
         if (parseFloat(arr[i].style.height) < pivotValue) {
             swap(arr, index, i)
             index++;
         }
     }
-    await pause(pauseTime)
+    await pause()
     $bars[end].style.background = "#fff";
     swap(arr, index, end)
     return index;
 }
 
+
 //swap bars at index i and j, where i > j
 function swap(arr, i, j) {
-    //swap bars in array
-    let extracted = arr.splice(j, 1)
-    arr.splice(i, 0, extracted[0]);
-
-    //swap bars in html
     $container.insertBefore($container.childNodes[j], $container.childNodes[i]);
-}
-
-function pause(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 
@@ -138,30 +153,40 @@ function pause(ms) {
 
 
 
-function mergeSort(arr) {
+async function mergeSort(arr) {
     //stop mergesort from being called if array size is 1
     if  (arr.length <= 1) return arr;
 
-    //halving the array
     let middle = Math.floor(arr.length / 2);
     let left = arr.slice(0, middle);
     let right = arr.slice(middle);
 
-    return merge(mergeSort(left), mergeSort(right));
+    let leftSorted = mergeSort(left);
+    let rightSorted = mergeSort(right);
+
+    //returns a sorted array to the previous mergeSort call i.e. leftSorted / rightSorted
+    let mergedArr = await merge(leftSorted, rightSorted);
+    return mergedArr;
 }
 
+
 //merges 2 sorted arrays
-function merge(arr1, arr2) {
+async function merge(arr1, arr2) {
     let finalArr = [];
+
     while (arr1.length && arr2.length) {
-        if (arr1[0] < arr2[0]) {
+        pause();
+        if (parseFloat(arr1[0].style.height) <= parseFloat(arr1[0].style.height)) {
             finalArr.push(arr1.shift());
         }
         else {
             finalArr.push(arr2.shift());
         }
     }
+
+    //concat the remaining numbers in either array
     return finalArr.concat(arr1, arr2);
 }
 
 
+let arr = [5,7,4,2,9,10];
