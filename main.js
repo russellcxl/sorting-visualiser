@@ -16,25 +16,6 @@ let yellow = "#f8e9a1";
 let red = "#f76c6c";
 let white = "#fff";
 
-//==================== test ====================//
-
-// for (let i = 0; i < 10; i++) {
-//     let $newBar = document.createElement("div");
-//     $newBar.style.height = `${i*6 + 6}%`;
-//     $newBar.style.width = `${barWidth}%`;
-//     $newBar.className = "bar";
-//     bars.push($newBar);
-//     $container.append($newBar);
-// }
-// for (let i = 0; i < 10; i++) {
-//     let $newBar = document.createElement("div");
-//     $newBar.style.height = `${i*4 + 4}%`;
-//     $newBar.style.width = `${barWidth}%`;
-//     $newBar.className = "bar";
-//     bars.push($newBar);
-//     $container.append($newBar);
-// }
-//====================  ====================//
 
 //default bars
 for (let i = 0; i < numOfBars; i++) {
@@ -61,7 +42,7 @@ function setBars() {
     $container.innerHTML = "";
 
     $size.value <= 15 ? pauseTime = 800
-        : $size.value <= 35 ? pauseTime = 80
+        : $size.value <= 35 ? pauseTime = 100
         : pauseTime = 30;
 
     $size.value <= 120 ? barWidth = 70/$size.value
@@ -120,7 +101,7 @@ function timerReset() {
 
 
 
-//visualise: last bar pink, all bars before yellow, yellow to white as loop runs, last bar to new index + white
+//visual: last bar pink, all bars before yellow, yellow to white as loop runs, last bar to new index + white
 
 
 //taking pivot as last element
@@ -176,13 +157,6 @@ function swap(arr, i, j) {
 
 
 
-//testing
-// let arr1 = Array.from($bars).slice(5,10);
-// let arr2 = Array.from($bars).slice(10,15);
-// let node = Array.from($bars).slice(19,20)[0];
-// let test;
-
-
 //visual: last bar of both array red, rest white, while comparing white => yellow, rearrange sweep white
 
 async function mergeSort(arr) {
@@ -203,7 +177,6 @@ async function mergeSort(arr) {
 
 
 //merges 2 sorted arrays
-//[2,6] + [5,9]
 async function merge(arr1, arr2) {
     let finalArr = [];
     let indexOffset = Array.from($container.childNodes).indexOf(arr1[0]);
@@ -257,11 +230,11 @@ async function merge(arr1, arr2) {
 
     for (let i = 0; i < finalArr.length; i++) {
         await pause();
+        timerReset();
         finalArr[i].style.background = white;
         $container.insertBefore(finalArr[i], $container.childNodes[i + indexOffset]);       
     }
 
-    test = finalArr;
     //concat the remaining numbers in either array
     return finalArr;
 }
