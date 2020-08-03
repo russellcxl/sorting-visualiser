@@ -1,5 +1,6 @@
 //==================== ui board set-up ====================//
 
+let bars = [];
 let numOfBars = 140;
 let pauseTime = 30;
 let barWidth = 0.5;
@@ -13,7 +14,27 @@ let $sortTypes = document.getElementsByName("sort-type");
 let $type;
 let yellow = "#f8e9a1";
 let red = "#f76c6c";
+let white = "#fff";
 
+//==================== test ====================//
+
+// for (let i = 0; i < 10; i++) {
+//     let $newBar = document.createElement("div");
+//     $newBar.style.height = `${i*6 + 6}%`;
+//     $newBar.style.width = `${barWidth}%`;
+//     $newBar.className = "bar";
+//     bars.push($newBar);
+//     $container.append($newBar);
+// }
+// for (let i = 0; i < 10; i++) {
+//     let $newBar = document.createElement("div");
+//     $newBar.style.height = `${i*4 + 4}%`;
+//     $newBar.style.width = `${barWidth}%`;
+//     $newBar.className = "bar";
+//     bars.push($newBar);
+//     $container.append($newBar);
+// }
+//====================  ====================//
 
 //default bars
 for (let i = 0; i < numOfBars; i++) {
@@ -21,6 +42,7 @@ for (let i = 0; i < numOfBars; i++) {
     $newBar.style.height = `${Math.random() * 90}%`;
     $newBar.style.width = `${barWidth}%`;
     $newBar.className = "bar";
+    bars.push($newBar);
     $container.append($newBar);
 }
 
@@ -74,7 +96,7 @@ $sorter.addEventListener("click", function() {
 
     determineSorter(); 
 
-    $type === "quick" ? quickSort($bars) : mergeSort($bars);
+    $type === "quick" ? quickSort($bars) : mergeSort(Array.from($bars));
 });
 
 //used for visualisation
@@ -143,6 +165,7 @@ async function partition(arr, start, end) {
 
 
 //swap bars at index i and j, where i > j
+//insertBefore will remove the 1st node
 function swap(arr, i, j) {
     $container.insertBefore($container.childNodes[j], $container.childNodes[i]);
 }
@@ -153,30 +176,76 @@ function swap(arr, i, j) {
 
 
 
+//testing
+// let arr1 = Array.from($bars).slice(5,10);
+// let arr2 = Array.from($bars).slice(10,15);
+// let node = Array.from($bars).slice(19,20)[0];
+// let test;
+
+
+//visual: last bar of both array red, rest white, while comparing white => yellow, rearrange sweep white
+
 async function mergeSort(arr) {
-    //stop mergesort from being called if array size is 1
     if  (arr.length <= 1) return arr;
 
     let middle = Math.floor(arr.length / 2);
     let left = arr.slice(0, middle);
     let right = arr.slice(middle);
 
-    let leftSorted = mergeSort(left);
-    let rightSorted = mergeSort(right);
+    let leftSorted = await mergeSort(left);
+    let rightSorted = await mergeSort(right);
 
     //returns a sorted array to the previous mergeSort call i.e. leftSorted / rightSorted
     let mergedArr = await merge(leftSorted, rightSorted);
+
     return mergedArr;
 }
 
 
 //merges 2 sorted arrays
+//[2,6] + [5,9]
 async function merge(arr1, arr2) {
     let finalArr = [];
+    let indexOffset = Array.from($container.childNodes).indexOf(arr1[0]);
 
+    //color last bar red
+    arr1[arr1.length - 1].style.background = red;
+    arr2[arr2.length - 1].style.background = red;
+
+    //color bars yellow as they are compared
+    //conditions are for cases where arrays are of different lengths
+    if (arr1.length < arr2.length) {
+        await pause();
+        arr2[0].style.background = yellow;
+        for (let i = 0; i < arr1.length - 1; i++) {
+            await pause();
+             arr1[i].style.background = yellow;
+             await pause();
+             arr2[i + 1].style.background = yellow               
+        }
+    }
+    else if (arr2.length < arr1.length) {
+        await pause();
+        arr1[0].style.background = yellow;
+        for (let i = 0; i < arr1.length - 1; i++) {
+            await pause();
+            arr2[i].style.background = yellow;
+            await pause();
+            arr1[i + 1].style.background = yellow               
+        }
+    }
+    else {
+        for (let i = 0; i < arr1.length - 1; i++) {
+            await pause();
+            arr1[i].style.background = yellow;
+            await pause();
+            arr2[i].style.background = yellow               
+        }
+    }
+
+    
     while (arr1.length && arr2.length) {
-        pause();
-        if (parseFloat(arr1[0].style.height) <= parseFloat(arr1[0].style.height)) {
+        if (parseFloat(arr1[0].style.height) < parseFloat(arr2[0].style.height)) {
             finalArr.push(arr1.shift());
         }
         else {
@@ -184,9 +253,15 @@ async function merge(arr1, arr2) {
         }
     }
 
+    finalArr = finalArr.concat(arr1, arr2);
+
+    for (let i = 0; i < finalArr.length; i++) {
+        await pause();
+        finalArr[i].style.background = white;
+        $container.insertBefore(finalArr[i], $container.childNodes[i + indexOffset]);       
+    }
+
+    test = finalArr;
     //concat the remaining numbers in either array
-    return finalArr.concat(arr1, arr2);
+    return finalArr;
 }
-
-
-let arr = [5,7,4,2,9,10];
