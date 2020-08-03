@@ -43,6 +43,13 @@ body {
     margin-left: 10px;
 }
 
+button:disabled,
+button[disabled]{
+  background-color: #cccccc;
+  color: #666666;
+  opacity: 0.5;
+}
+
 .badge {
     background: #374785;
     color: #fff;
