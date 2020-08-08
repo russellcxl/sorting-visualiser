@@ -77,17 +77,17 @@ input[type=range]::-ms-thumb {
 
 /* overlay for radio buttons */
 input[type='radio']:after {
-        width: 15px;
-        height: 15px;
-        border-radius: 15px;
-        top: -4.5px;
-        left: -1px;
-        position: relative;
-        background-color: #d1d3d1;
-        content: '';
-        display: inline-block;
-        visibility: visible;
-        border: 2px solid white;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -4.5px;
+    left: -1px;
+    position: relative;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
 } 
 
 input[type='radio']:checked:after {
@@ -102,6 +102,7 @@ input[type='radio']:checked:after {
     display: inline-block;
     visibility: visible;
     border: 2px solid white;
+    transition: all 0.5s ease;
 }
 
 

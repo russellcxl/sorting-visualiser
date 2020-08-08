@@ -1,3 +1,4 @@
+const { quickSort } = require("./quick-sort.js");
 let numOfBuckets = 10;
 let buckets = [];
 
@@ -15,6 +16,7 @@ function bucketSort(arr) {
         if (arr[i] < min) min = arr[i];
     }
 
+    // +1 because buckets have min inclusive
     bucketSize = Math.floor((max - min) / numOfBuckets) + 1;
     console.log("size is " + bucketSize);
     
@@ -25,9 +27,8 @@ function bucketSort(arr) {
 
     // sort numbers within buckets
     for (let i = 0; i < buckets.length; i++) {
-        buckets[i] = someOtherSort(buckets[i]);        
+        buckets[i] = quickSort(buckets[i]);        
     }
 
     return buckets.flat();
-
 }

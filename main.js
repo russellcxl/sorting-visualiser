@@ -14,6 +14,7 @@ let $sortTypes = document.getElementsByName("sort-type");
 let $type;
 let yellow = "#f8e9a1";
 let red = "#f76c6c";
+let darkBlue = "#374785"
 let white = "#fff";
 
 
@@ -40,6 +41,7 @@ function determineSorter() {
 //populates container with bars
 function setBars() {
     $container.innerHTML = "";
+    buckets = [];
 
     $size.value <= 15 ? pauseTime = 800
         : $size.value <= 35 ? pauseTime = 100
@@ -77,7 +79,9 @@ $sorter.addEventListener("click", function() {
 
     determineSorter(); 
 
-    $type === "quick" ? quickSort($bars) : mergeSort(Array.from($bars));
+    $type === "quick" ? quickSort($bars) 
+        : $type === "merge" ? mergeSort(Array.from($bars))
+        : bucketSort(Array.from($bars));
 });
 
 //used for visualisation
@@ -124,7 +128,7 @@ async function partition(arr, start, end) {
     
     //color all before [end] yellow
     for (let i = start; i < end; i++) {
-        $bars[i].style.background = "#f8e9a1";   
+        $bars[i].style.background = yellow;   
     }
 
     for (let i = start; i < end; i++) {
@@ -242,3 +246,61 @@ async function merge(arr1, arr2) {
 
 
 //==================== bucket sort ====================//
+
+
+
+// visual: while sorting into buckets, bars to yellow, bucket boundaries to red, 
+
+let numOfBuckets = 10;
+let buckets = [];
+
+async function bucketSort(arr) {
+
+    //create 'buckets' (arrays)
+    for (let i = 0; i < numOfBuckets; i++) {
+        buckets.push([]);    
+    }
+
+    let max = 0;
+    let min = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+        let value = parseFloat(arr[i].style.height);
+        if (value > max) max = value;
+        if (value < min) min = value;
+    }
+
+    // +1 because buckets have min inclusive
+    bucketSize = Math.floor((max - min) / numOfBuckets) + 1;
+    
+    // sort numbers into buckets
+    for (let i = 0; i < arr.length; i++) {
+        let value = parseFloat(arr[i].style.height);
+        buckets[Math.floor((value - min) / bucketSize)].push(arr[i]);     
+    }
+
+    // sort numbers into buckets for UI, white to yellow, bucket boundary to red
+    let bucketsFlat = buckets.flat();
+    for (let i = 0; i < bucketsFlat.length - 1; i++) {
+        await pause();
+        timerReset();
+
+        let bucketIndex1 = Math.floor((parseFloat(bucketsFlat[i].style.height) - min) / bucketSize);
+        let bucketIndex2 = Math.floor((parseFloat(bucketsFlat[i + 1].style.height) - min) / bucketSize);
+
+        if (bucketIndex1 != bucketIndex2) {
+            bucketsFlat[i].style.background = darkBlue;
+        }
+
+        $container.insertBefore(bucketsFlat[i], $container.childNodes[i]);       
+    }
+    bucketsFlat[bucketsFlat.length - 1].style.background = darkBlue;
+
+    // sort numbers within buckets
+    for (let i = 0; i < buckets.length; i++) {
+        buckets[i] = await mergeSort(buckets[i]);        
+    }
+
+    // return buckets.flat();
+}
+
