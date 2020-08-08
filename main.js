@@ -1,6 +1,6 @@
 //==================== ui board set-up ====================//
 
-let bars = [];
+let bars = []; //used as temp array for creating HTML bars
 let numOfBars = 140;
 let pauseTime = 30;
 let barWidth = 0.5;
@@ -20,15 +20,32 @@ let white = "#fff";
 
 
 //default bars
-for (let i = 0; i < numOfBars; i++) {
-    let $newBar = document.createElement("div");
-    $newBar.style.height = `${Math.random() * 90}%`;
-    $newBar.style.width = `${barWidth}%`;
-    $newBar.className = "bar";
-    bars.push($newBar);
-    $container.append($newBar);
-}
+// for (let i = 0; i < numOfBars; i++) {
+//     let $newBar = document.createElement("div");
+//     $newBar.style.height = `${Math.random() * 90}%`;
+//     $newBar.style.width = `${barWidth}%`;
+//     $newBar.className = "bar";
+//     bars.push($newBar);
+//     $container.append($newBar);
+// }
 
+//bars of evenly distributed height
+async function barsUniform() {
+    for (let i = 0; i < numOfBars; i++) {
+        let $newBar = document.createElement("div");
+        $newBar.style.height = `${100 / numOfBars * i}%`;
+        $newBar.style.width = `${barWidth}%`;
+        $newBar.className = "bar";
+        await bars.push($newBar);
+    }
+
+    for (let i = 0; i < numOfBars; i++) {
+        $container.append(bars.splice([Math.floor(Math.random() * bars.length)], 1)[0]);
+    }
+}
+barsUniform();
+
+//'extend' click from radio buttons to adjacent labels
 for (let i = 0; i < $labels.length; i++) {
     $labels[i].addEventListener("click", function() {
         $sortTypes[i].checked = true;
@@ -57,13 +74,7 @@ function setBars() {
     $size.value <= 120 ? barWidth = 70/$size.value
         : barWidth = 0.5;
 
-    for (let i = 0; i < numOfBars; i++) {
-        let $newBar = document.createElement("div");
-        $newBar.style.height = `${Math.random() * 90}%`;
-        $newBar.style.width = `${barWidth}%`;
-        $newBar.className = "bar";
-        $container.append($newBar);
-    }
+    barsUniform();
 }
 
 //adjust number of bars in container
