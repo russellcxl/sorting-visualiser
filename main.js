@@ -11,6 +11,7 @@ let $sorter = document.querySelector(".button-sort");
 let $bars = document.getElementsByClassName("bar");
 let $size = document.querySelector(".bars-range");
 let $sortTypes = document.getElementsByName("sort-type");
+let $labels = document.getElementsByClassName("labels");
 let $type;
 let yellow = "#f8e9a1";
 let red = "#f76c6c";
@@ -26,6 +27,12 @@ for (let i = 0; i < numOfBars; i++) {
     $newBar.className = "bar";
     bars.push($newBar);
     $container.append($newBar);
+}
+
+for (let i = 0; i < $labels.length; i++) {
+    $labels[i].addEventListener("click", function() {
+        $sortTypes[i].checked = true;
+    });    
 }
 
 //loops through radio buttons to find the value of the checked one
