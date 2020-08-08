@@ -105,6 +105,11 @@ input[type='radio']:checked:after {
     transition: all 0.5s ease;
 }
 
+input[type='radio']:checked + label {
+    /* color: #f8e9a1; */
+    font-weight: bold;
+}
+
 
 .container-select-sort {
     display: inline-block;
