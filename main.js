@@ -40,7 +40,8 @@ async function barsUniform() {
     }
 
     for (let i = 0; i < numOfBars; i++) {
-        $container.append(bars.splice([Math.floor(Math.random() * bars.length)], 1)[0]);
+        let randIndex = Math.floor(Math.random() * bars.length);
+        $container.append(bars.splice([randIndex], 1)[0]);
     }
 }
 barsUniform();
@@ -297,8 +298,9 @@ async function bucketSort(arr) {
         buckets[Math.floor((value - min) / bucketSize)].push(arr[i]);     
     }
 
-    // sort numbers into buckets for UI, white to yellow, bucket boundary to red
+    // sort numbers into buckets for UI, boundaries to blue, sort using merge
     let bucketsFlat = buckets.flat();
+    let colorTemp = white;
     for (let i = 0; i < bucketsFlat.length - 1; i++) {
         await pause();
         timerReset();
@@ -318,7 +320,11 @@ async function bucketSort(arr) {
     for (let i = 0; i < buckets.length; i++) {
         buckets[i] = await mergeSort(buckets[i]);        
     }
-
-    // return buckets.flat();
 }
+
+
+
+//==================== heap sort ====================//
+
+
 
