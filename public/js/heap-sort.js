@@ -31,7 +31,7 @@ function swap(arr, i, j) {
 // heapify all parent nodes
 function heapifyAll(arr) {
     let middle = Math.floor(arr.length / 2);
-    for (let i = arr[middle]; i >= 0; i--) {
+    for (let i = middle; i >= 0; i--) {
         heapify(arr, i);        
     }
 }
@@ -46,7 +46,7 @@ function heapSort(arr) {
     // swap root and last, heapify all parent nodes
     for (let i = arrLength - 1; i >= 0; i--) {
         swap(arr, 0, i);
-        sortedArr.push(arr.splice(i, 1));
+        sortedArr.push(arr.splice(i, 1)[0]);
         heapifyAll(arr);
     }
 

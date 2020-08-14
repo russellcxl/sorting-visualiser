@@ -120,7 +120,9 @@ function timerReset() {
 
 
 
+
 //==================== quick sort ====================//
+
 
 
 
@@ -176,7 +178,9 @@ function swap(arr, i, j) {
 
 
 
+
 //==================== merge sort ====================//
+
 
 
 
@@ -217,7 +221,8 @@ async function merge(arr1, arr2) {
             await pause();
              arr1[i].style.background = yellow;
              await pause();
-             arr2[i + 1].style.background = yellow               
+             arr2[i + 1].style.background = yellow;
+             timerReset();               
         }
     }
     else if (arr2.length < arr1.length) {
@@ -227,7 +232,8 @@ async function merge(arr1, arr2) {
             await pause();
             arr2[i].style.background = yellow;
             await pause();
-            arr1[i + 1].style.background = yellow               
+            arr1[i + 1].style.background = yellow;
+            timerReset();               
         }
     }
     else {
@@ -235,7 +241,8 @@ async function merge(arr1, arr2) {
             await pause();
             arr1[i].style.background = yellow;
             await pause();
-            arr2[i].style.background = yellow               
+            arr2[i].style.background = yellow;
+            timerReset();               
         }
     }
 
@@ -264,7 +271,9 @@ async function merge(arr1, arr2) {
 
 
 
+
 //==================== bucket sort ====================//
+
 
 
 
@@ -301,12 +310,17 @@ async function bucketSort(arr) {
     // sort numbers into buckets for UI, boundaries to blue, sort using merge
     let bucketsFlat = buckets.flat();
     let colorTemp = white;
+
     for (let i = 0; i < bucketsFlat.length - 1; i++) {
+
+        let value1 = parseFloat(bucketsFlat[i].style.height);
+        let value2 = parseFloat(bucketsFlat[i + 1].style.height);
+
+        let bucketIndex1 = Math.floor((value1 - min) / bucketSize);
+        let bucketIndex2 = Math.floor((value2 - min) / bucketSize);
+
         await pause();
         timerReset();
-
-        let bucketIndex1 = Math.floor((parseFloat(bucketsFlat[i].style.height) - min) / bucketSize);
-        let bucketIndex2 = Math.floor((parseFloat(bucketsFlat[i + 1].style.height) - min) / bucketSize);
 
         if (bucketIndex1 != bucketIndex2) {
             bucketsFlat[i].style.background = darkBlue;
@@ -314,6 +328,7 @@ async function bucketSort(arr) {
 
         $container.insertBefore(bucketsFlat[i], $container.childNodes[i]);       
     }
+
     bucketsFlat[bucketsFlat.length - 1].style.background = darkBlue;
 
     // sort numbers within buckets
@@ -324,7 +339,96 @@ async function bucketSort(arr) {
 
 
 
+
 //==================== heap sort ====================//
 
 
 
+
+// visual: root node red, shift to end, all others white to yellow, when root node hits end, red to white, as heapifyAll runs, yellow to white from right, root node red, etc.
+
+function heapify(arr, i) {
+    let max = i;
+    let left = 2 * i + 1;
+    let right = 2 * i + 2;
+
+    if (arr[left]) {
+        if (parseFloat(arr[left].style.height) > parseFloat(arr[max].style.height)) {
+            max = left;
+        } 
+    }
+    if (arr[right]) {
+        if (parseFloat(arr[right].style.height) > parseFloat(arr[max].style.height)) {
+            max = right;
+        }
+    }
+    
+    if (max != i) {
+        swap2(arr, i, max);
+        heapify(arr, max);
+    }
+}
+
+// swap heights of bars instead of rearranging them in the container
+function swap2(arr, i , j) {
+    // let temp1 = arr[i].cloneNode(true);
+    // let temp2 = arr[j].cloneNode(true);
+    // $container.replaceChild(temp1, $container.childNodes[j]);
+    // $container.replaceChild(temp2, $container.childNodes[i]);
+
+    // $container.insertBefore($container.childNodes[j], $container.childNodes[i]);
+    // $container.insertBefore($container.childNodes[i + 1], $container.childNodes[j + 1]);
+
+    // let temp1 = parseFloat(arr[i].style.height);
+    // let temp2 = parseFloat(arr[j].style.height);
+    // arr[j].style.height = `${temp1}%`;
+    // arr[i].style.height = `${temp2}%`;
+
+    let temp = arr[i];
+    arr[i] = arr[j];
+    arr.splice(j, 1, temp);
+}
+
+// heapify all parent nodes
+function heapifyAll(arr) {
+    let middle = Math.floor(arr.length / 2);
+
+    for (let i = middle - 1; i >= 0; i--) {
+        heapify(arr, i);     
+    }
+}
+
+async function heapSort(arr) {
+    // all (unsorted) bars should start as yellow
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].style.background = yellow;
+    }
+
+    let sortedArr = [];
+    let arrLength = arr.length;
+
+    heapifyAll(arr);
+    
+    for (let i = arr.length - 1; i >= 0; i--) {
+        arr[i].style.background = white;
+        await pause();
+        // $container.insertBefore(arr[i], $container.childNodes[i]);
+    }
+
+
+
+
+
+    // for (let i = arrLength - 1; i >= 0; i--) {
+    //     swap2(arr, 0, i);
+    //     heapifyAll(Array.from(arr).slice(0, i));
+    // }
+
+    // console.log(sortedArr.map(x => x.style.height))
+
+    // for (let i = 0; i < sortedArr.length; i++) {
+    //     $container.insertBefore(sortedArr[i], $container.childNodes[i]);
+    // }
+    
+
+}
