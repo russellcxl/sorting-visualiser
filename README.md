@@ -31,6 +31,7 @@
     # you'll notice that if we take the parent node 3, it is indexed at [0], while the child nodes 1 and 5 are indexed at [2i + 1 = 1] and [2i + 2 = 2] respectively.
     ```
     - The first step, as mentioned above, is to rearrange the array, or *heapify* it. We only need to start from the middle of the array, or node 5, since the nodes below are not parent to any child nodes.
+    - Ok I'm too lazy to type it all out here. You can find them in the public/js folder; I wrote them as I wrote the code.
     - The visualisation was done a little differently from the other sorting algorithms. In the others, I was rearranging the HTML elements. Whereas for the heap sort, I manipulated the attributes of the HTML elements -- that, I realised, is a far less problem-prone method.
 
 

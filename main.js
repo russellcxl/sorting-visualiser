@@ -3,7 +3,7 @@
 let bars = []; //used as temp array for creating HTML bars
 let barHeights; //used only for heapsort because sorting the heights rather than the HTML elements seem much easier
 let numOfBars = 140;
-let pauseTime = 15;
+let pauseTime = 30;
 let barWidth = 0.5;
 let timer; //for disabling UI
 let $container = document.querySelector(".main-container");
@@ -24,7 +24,7 @@ let white = "#fff";
 function barsUniform() {
     for (let i = 0; i < numOfBars; i++) {
         let $newBar = document.createElement("div");
-        $newBar.style.height = `${100 / numOfBars * i}%`;
+        $newBar.style.height = `${98 / numOfBars * (i +1)}%`;
         $newBar.style.width = `${barWidth}%`;
         $newBar.className = "bar";
         bars.push($newBar);
@@ -341,10 +341,11 @@ async function bucketSort(arr) {
 // visual: root node red, shift to end, all others white to yellow, when root node hits end, red to white, as heapifyAll runs, yellow to white from right, root node red, etc.
 
 
-function heapify(arr, i) {
+async function heapify(arr, i) {
     let max = i;
     let left = 2 * i + 1;
     let right = 2 * i + 2;
+
     if (arr[left]) {
         if (arr[left] > arr[max]) {
             max = left;
@@ -358,74 +359,64 @@ function heapify(arr, i) {
     }
     
     if (max != i) {
-        swapInArr(arr, i, max);
-        heapify(arr, max);
+
+        // selects all nodes to be compared, colors yellow
+        $container.children[i].style.background = yellow;
+        await pause();
+        if (arr[left]) $container.children[left].style.background = yellow;
+        await pause();
+        if (arr[right]) $container.children[right].style.background = yellow;
+        await pause();
+
+        swapArr(arr, i, max);
+        updateBars(arr, i, max);
+
+        // change them back to white after the swap
+        $container.children[i].style.background = white;
+        if (arr[left]) $container.children[left].style.background = white;
+        if (arr[right]) $container.children[right].style.background = white;
+
+        await heapify(arr, max);
     }
 }
 
-// heapify all parent nodes
-function heapifyAll(arr) {
+
+async function heapifyAll(arr) {
     let middle = Math.floor(arr.length / 2);
     for (let i = middle; i >= 0; i--) {
-        heapify(arr, i);        
+        await heapify(arr, i);        
     }
 }
+
 
 async function heapSort(arr) {
     let sortedArr = [];
     let arrLength = arr.length;
-    for (let i = 0; i < arr.length; i++) {
-        $container.children[i].style.background = yellow;
-    }
 
     // heapify all parent nodes
-    heapifyAll(arr);
+    await heapifyAll(arr);
 
-    for (let i = arr.length - 1; i >= 0; i--) {
-        $container.children[i].style.height = `${arr[i]}%`;
-        i == 0 ? $container.children[i].style.background = red
-            : $container.children[i].style.background = white;
-        await pause();       
-    }
-
-
-    // swap root and last, heapify all parent nodes
     for (let i = arrLength - 1; i >= 0; i--) {
 
-        // swaps arr
-        swapInArr(arr, 0, i);
-
-        // brings first bar (root/largest bar) to the end
-        for (let j = 0; j < arr.length - 1; j++) {
-            swapNodes(j, j + 1);
-            await pause();
-        }
+        await pause();
+        swapArr(arr, 0, i);
+        updateBars(arr, 0, i);
 
         arr.pop();
 
-        // heapifies arr
-        heapifyAll(arr);
-
-        // changes bars from yellow to white as it heapifies
-        for (let j = i - 1; j >= 0; j--) {
-            $container.children[j].style.height = `${arr[j]}%`;
-            j == 0 ? $container.children[j].style.background = red
-                : $container.children[j].style.background = white;
-            await pause();       
-        }
+        await heapifyAll(arr);
     }
 }
 
-function swapInArr(arr, i, j) {
+
+function swapArr(arr, i, j) {
     let temp = arr[i];
     arr[i] = arr[j];
     arr.splice(j, 1, temp);
 }
 
-function swapNodes(i, j) {
-    let temp1 = $container.children[i].cloneNode(true);
-    let temp2 = $container.children[j].cloneNode(true);
-    temp2.style.background = yellow;
-    $container.replaceChild(temp1, $container.childNodes[j]);
-    $container.replaceChild(temp2, $container.childNodes[i]);
+// updates HTML bars according to the values in the arr
+function updateBars(arr, i, j) {
+    $container.children[i].style.height = `${arr[i]}%`;
+    $container.children[j].style.height = `${arr[j]}%`;
 }
