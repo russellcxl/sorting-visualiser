@@ -6,11 +6,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="public/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="public/scss/custom.scss"> -->
+    
     <script src="public/js/bootstrap.js.map"></script>
     <script src="public/js/jquery.min.js"></script>
     <title>Sorting Visualiser</title>
 </head>
 <body style="background: #a8d0e6; color: whitesmoke;">
+
     <div class="title d-flex justify-content-center mt-3">
         <h1>SORTING VISUALISER</h1>
     </div>
@@ -23,25 +26,21 @@
     </div>
 
     <!-- Sorter selector -->
-    <!-- <div class="container-select-sort d-flex justify-content-center mt-3">
-        <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
-            <label class="custom-control-label" for="customRadioInline1">Quick Sort</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
-            <label class="custom-control-label" for="customRadioInline2">Merge Sort</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input">
-            <label class="custom-control-label" for="customRadioInline3">Tree Sort</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="customRadioInline4" name="customRadioInline1" class="custom-control-input">
-            <label class="custom-control-label" for="customRadioInline4">Bubble Sort</label>
-        </div>
-    </div> -->
+    <div class="container-select-sort d-flex justify-content-center align-items-center mt-3">
     
+        <input class="radio-buttons" type="radio" name="sort-type" value="quick" checked>
+        <label class="labels">Quick Sort</label>
+    
+        <input class="radio-buttons" type="radio" name="sort-type" value="merge">
+        <label class="labels">Merge Sort</label>
+
+        <input class="radio-buttons" type="radio" name="sort-type" value="bucket">
+        <label class="labels">Bucket Sort</label>
+
+        <!-- <input class="radio-buttons" type="radio" name="sort-type" value="heap">
+        <label class="labels">Heap Sort</label> -->
+    
+    </div>
     <!-- Container for bars to be sorted -->
     <div class="main-container mx-auto my-3 d-flex"></div>
 
@@ -49,7 +48,6 @@
     <div class="button-container mt-3 d-flex justify-content-center">
         <button class="button-generic button-sort">Sort</button>
         <button class="button-generic button-randomise">Randomise</button>
-        
     </div>
 
     <!-- Footer -->
