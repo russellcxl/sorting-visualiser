@@ -3,7 +3,7 @@
 let bars = []; //used as temp array for creating HTML bars
 let barHeights; //used only for heapsort because sorting the heights rather than the HTML elements seem much easier
 let numOfBars = 140;
-let pauseTime = 30;
+let pauseTime = 15;
 let barWidth = 0.5;
 let timer; //for disabling UI
 let $container = document.querySelector(".main-container");
@@ -60,8 +60,8 @@ function setBars() {
     buckets = [];
 
     $size.value <= 15 ? pauseTime = 800
-        : $size.value <= 35 ? pauseTime = 100
-        : pauseTime = 30;
+        : $size.value <= 50 ? pauseTime = 100
+        : pauseTime = 15;
 
     $size.value <= 120 ? barWidth = 70/$size.value
         : barWidth = 0.5;
@@ -213,7 +213,6 @@ async function merge(arr1, arr2) {
         for (let i = 0; i < arr1.length - 1; i++) {
             await pause();
              arr1[i].style.background = yellow;
-             await pause();
              arr2[i + 1].style.background = yellow;
              timerReset();               
         }
@@ -224,7 +223,6 @@ async function merge(arr1, arr2) {
         for (let i = 0; i < arr1.length - 1; i++) {
             await pause();
             arr2[i].style.background = yellow;
-            await pause();
             arr1[i + 1].style.background = yellow;
             timerReset();               
         }
@@ -233,7 +231,6 @@ async function merge(arr1, arr2) {
         for (let i = 0; i < arr1.length - 1; i++) {
             await pause();
             arr1[i].style.background = yellow;
-            await pause();
             arr2[i].style.background = yellow;
             timerReset();               
         }
