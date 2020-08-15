@@ -6,9 +6,9 @@
 - quick sort
 - merge sort
 - bucket sort
+- heap sort
 
 ### To-do:
-- heap sort
 - bubble sort
 
 ### Tips for creating the visualisation:
