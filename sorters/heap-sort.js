@@ -1,4 +1,4 @@
-// visual: root node red, shift to end, all others white to yellow, when root node hits end, red to white, as heapifyAll runs, yellow to white from right, root node red, etc.
+// visual: binary tree nodes to yellow when compared, red for largest
 
 async function heapify(arr, i) {
     let max = i;
@@ -20,20 +20,36 @@ async function heapify(arr, i) {
     if (max != i) {
 
         // selects all nodes to be compared, colors yellow
-        $container.children[i].style.background = yellow;
-        await pause();
-        if (arr[left]) $container.children[left].style.background = yellow;
-        await pause();
-        if (arr[right]) $container.children[right].style.background = yellow;
-        await pause();
+        // largest node / tallest bar to red
+        await setBarColor(i, yellow);
 
-        swapArr(arr, i, max);
-        updateBars(arr, i, max);
+        if (arr[left]) {
+            await setBarColor(left, yellow);
+        }
+
+        if (arr[right]) {
+            await setBarColor(right, yellow);
+        } 
+
+        await setBarColor(max, red);
+
+        swapInArr(arr, i, max);
+        setBarHeight(arr, i, max);
+
+        // change tallest bar to red after swapping; a little manual but oh well
+        setBarColor(i, red);
+        await setBarColor(max, yellow);
 
         // change them back to white after the swap
-        $container.children[i].style.background = white;
-        if (arr[left]) $container.children[left].style.background = white;
-        if (arr[right]) $container.children[right].style.background = white;
+        setBarColor(i, white);
+        setBarColor(left, white);
+        setBarColor(right, white);
+
+        // additional animation for when there are <= 15 bars
+        if ($size.value <= 15) {
+            await pause();
+        }
+        
 
         await heapify(arr, max);
     }
@@ -43,7 +59,7 @@ async function heapify(arr, i) {
 async function heapifyAll(arr) {
     let middle = Math.floor(arr.length / 2);
     for (let i = middle; i >= 0; i--) {
-        await heapify(arr, i);        
+        await heapify(arr, i);       
     }
 }
 
@@ -57,25 +73,51 @@ async function heapSort(arr) {
 
     for (let i = arrLength - 1; i >= 0; i--) {
 
-        await pause();
-        swapArr(arr, 0, i);
-        updateBars(arr, 0, i);
+        // set both first and last bar to red i.e. the ones being swapped
+        // additional animation for when there are <= 15 bars
+        if ($size.value <= 15) {
+            setBarColor(i, red);
+            await setBarColor(0, red);
+        }
+        
+        swapInArr(arr, 0, i);
+        setBarHeight(arr, 0, i);
 
         arr.pop();
+
+        // additional animation for when there are <= 15 bars
+        if ($size.value <= 15) {
+            setBarColor(i, white);
+            await setBarColor(0, white);
+        }
 
         await heapifyAll(arr);
     }
 }
 
 
-function swapArr(arr, i, j) {
+//==================== complementary functions ====================//
+
+
+// swaps values in arr only
+function swapInArr(arr, i, j) {
     let temp = arr[i];
     arr[i] = arr[j];
     arr.splice(j, 1, temp);
 }
 
-// updates HTML bars according to the values in the arr
-function updateBars(arr, i, j) {
-    $container.children[i].style.height = `${arr[i]}%`;
-    $container.children[j].style.height = `${arr[j]}%`;
+
+// for updating HTML bar heights according to the values in the arr
+function setBarHeight(arr, ...args) {
+    for (let i = 0; i < args.length; i++) {
+        let index = args[i];
+        $container.children[index].style.height = `${arr[index]}%`;    
+    }
+    
+}
+
+
+async function setBarColor(index, color) {
+    $container.children[index].style.background = color;
+    await pause();
 }

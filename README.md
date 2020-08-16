@@ -1,6 +1,6 @@
 # Sorting algorithms
 
-*Pure js functions can be found in public/js*
+*Pure js functions can be found in public/algo-pure-js folder*
 
 ### Current sorts:
 - quick sort
