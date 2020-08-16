@@ -18,6 +18,11 @@ let darkBlue = "#374785"
 let white = "#fff";
 
 
+
+// ------------------------------------ set bars ------------------------------------ //
+
+
+
 //bars of evenly distributed height
 function barsUniform() {
     for (let i = 0; i < numOfBars; i++) {
@@ -101,6 +106,11 @@ $sorter.addEventListener("click", function() {
 });
 
 
+
+// ------------------------------------ timer functions ------------------------------------ //
+
+
+
 //pauses between animations
 function pause() {
     return new Promise(resolve => setTimeout(resolve, pauseTime));
@@ -117,3 +127,40 @@ function timerReset() {
     }, 1000);
 }
 
+
+
+// ------------------------------------ modals ------------------------------------ //
+
+
+
+$("document").ready(function() {
+
+    Swal.mixin({
+        confirmButtonText: 'Next &rarr;'
+        // progressSteps: ['1', '2', '3']
+      }).queue([
+        {
+            text: 'Use the slider to adjust the number of bars in the container. The speed will adjust accordingly.',
+            imageUrl: 'public/images/slider-demo.gif',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+        },
+        {
+            text: 'To see how the algorithm works, slide it all the way to the left.',
+            imageUrl: 'public/images/slider-min-demo.gif',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+        },
+        {
+            text: 'For a visual treat (somewhat), slide it all the way to the right.',
+            imageUrl: 'public/images/slider-max-demo.gif',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+            confirmButtonText: 'All set!'
+        }
+      ])
+
+});

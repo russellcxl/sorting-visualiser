@@ -95,7 +95,9 @@ async function heapSort(arr) {
 }
 
 
-//==================== complementary functions ====================//
+
+// ------------------------------------ complementary functions ------------------------------------ //
+
 
 
 // swaps values in arr only

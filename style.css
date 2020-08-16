@@ -138,3 +138,18 @@ label:hover {
     color: #f8e9a1;
 }
 
+
+/* sweet alert modal */
+
+.swal2-styled.swal2-confirm, .swal2-progress-steps .swal2-active-progress-step {
+    background: #374785 !important;
+}
+
+.swal2-progress-steps .swal2-progress-step-line, .swal2-progress-steps .swal2-progress-step {
+    background: #374785 !important;
+}
+
+
+.swal2-styled:focus {
+    box-shadow: none !important;
+}
