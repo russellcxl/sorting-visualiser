@@ -20,17 +20,17 @@ async function heapify(arr, i) {
     if (max != i) {
 
         // selects all nodes to be compared, colors yellow
-        // largest node / tallest bar to red
-        await setBarColor(i, yellow);
-
+        
         if (arr[left]) {
-            await setBarColor(left, yellow);
+            setBarColor(left, yellow);
         }
 
         if (arr[right]) {
-            await setBarColor(right, yellow);
+            setBarColor(right, yellow);
         } 
+        await setBarColor(i, yellow);
 
+        // largest node / tallest bar to red
         await setBarColor(max, red);
 
         swapInArr(arr, i, max);
