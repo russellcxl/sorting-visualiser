@@ -1,7 +1,7 @@
 let bars = []; //used as temp array for creating HTML bars
-let barHeights; //used only for heapsort because sorting the heights rather than the HTML elements seem much easier
+let barHeights; //used only for heapsort because sorting the heights rather than the HTML elements seems much easier
 let numOfBars = 140;
-let pauseTime = 15;
+let pauseTime = 10;
 let barWidth = 0.5;
 let timer; //for disabling UI
 let $container = document.querySelector(".main-container");
@@ -62,7 +62,7 @@ function setBars() {
 
     $size.value <= 15 ? pauseTime = 800
         : $size.value <= 50 ? pauseTime = 100
-        : pauseTime = 15;
+        : pauseTime = 1400 / $size.value;
 
     $size.value <= 120 ? barWidth = 70/$size.value
         : barWidth = 0.5;
@@ -114,6 +114,6 @@ function timerReset() {
         $size.disabled = false;
         $randomiser.disabled = false;
         $sorter.disabled = false;
-    }, 2000);
+    }, 1000);
 }
 
