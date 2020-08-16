@@ -1,4 +1,4 @@
-const { quickSort } = require("./quick-sort.js");
+const quickSort = require("./quick-sort.js");
 let numOfBuckets = 10;
 let buckets = [];
 
