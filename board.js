@@ -141,7 +141,7 @@ $("document").ready(function() {
       }).queue([
         {
             text: 'Use the slider to adjust the number of bars in the container. The speed will adjust accordingly.',
-            imageUrl: 'public/images/slider-demo.gif',
+            imageUrl: 'public/images/slider-demo-zoomed.gif',
             imageWidth: 400,
             imageHeight: 200,
             imageAlt: 'Custom image',
