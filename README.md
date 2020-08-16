@@ -46,5 +46,5 @@ If you would like to see how exactly the algorithm works, you can set the slider
 
 #### Other to-do:
 - Include option to sort ascending/descending
-- Include option for evenly distributed bar heights/random
+- Refactor all sorts so that it works the same way as heap sort. Right now, all functions except heap sort takes in HTML elements. They should take in an array of height values instead.
 - Improve radio buttons; a little hard to click on that tiny dot

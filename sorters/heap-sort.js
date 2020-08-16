@@ -20,7 +20,6 @@ async function heapify(arr, i) {
     if (max != i) {
 
         // selects all nodes to be compared, colors yellow
-        
         if (arr[left]) {
             setBarColor(left, yellow);
         }
@@ -59,7 +58,7 @@ async function heapify(arr, i) {
 async function heapifyAll(arr) {
     let middle = Math.floor(arr.length / 2);
     for (let i = middle; i >= 0; i--) {
-        await heapify(arr, i);       
+        await heapify(arr, i);
     }
 }
 
@@ -120,4 +119,5 @@ function setBarHeight(arr, ...args) {
 async function setBarColor(index, color) {
     $container.children[index].style.background = color;
     await pause();
+    timerReset();
 }
