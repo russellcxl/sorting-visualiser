@@ -1,7 +1,8 @@
-# Sorting algorithms
+# Sorting Visualiser
+A visualiser for the some of the more popular sorting algorithms.
 
-## Sorts
 *Pure js functions can be found in public/algo-pure-js*
+
 #### Current:
 - quick sort
 - merge sort
@@ -16,10 +17,14 @@
 
 ![App screenshot](public/images/sorter-ss.JPG)
 
+If you would like to see how exactly the algorithm works, you can set the slider to the minimum. That gives you 10 bars and a really slow animation speed.
+
 #### Tips for creating the visualisation:
 - Never start with the entire function; always start with the helper functions. Run it once on an isolated array and see if the function and DOM works as expected.
 - After that, start adding in the colours and async/await
 - At first, I coded the visuals by shifting HTML elements around. That, I found, gave lots of problems because sometimes you would have to clone the elements and they would get 'lost', and you would have a hard time selecting what you want. This is why I think it is far better to code the visuals by modifying the HTML elements' attributes.
+
+## Etc.
 
 #### Understanding heap sort:
 - Of the sorts, heap was the hardest to understand and code. Thought I'd record here how I got about it.
