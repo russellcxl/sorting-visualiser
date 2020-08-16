@@ -2,7 +2,7 @@
 
 let bars = []; //used as temp array for creating HTML bars
 let numOfBars = 140;
-let pauseTime = 30;
+let pauseTime = 20;
 let barWidth = 0.5;
 let timer; //for disabling UI
 let $container = document.querySelector(".main-container");
@@ -70,7 +70,7 @@ function setBars() {
 
     $size.value <= 15 ? pauseTime = 800
         : $size.value <= 35 ? pauseTime = 100
-        : pauseTime = 30;
+        : pauseTime = 20;
 
     $size.value <= 120 ? barWidth = 70/$size.value
         : barWidth = 0.5;
@@ -399,6 +399,7 @@ function heapifyAll(arr) {
 }
 
 async function heapSort(arr) {
+    
     // all (unsorted) bars should start as yellow
     for (let i = 0; i < arr.length; i++) {
         arr[i].style.background = yellow;
@@ -412,19 +413,14 @@ async function heapSort(arr) {
     for (let i = arr.length - 1; i >= 0; i--) {
         arr[i].style.background = white;
         await pause();
-        // $container.insertBefore(arr[i], $container.childNodes[i]);
+        $container.insertBefore(arr[i], $container.childNodes[i]);
+        $container.childNodes[i].style.background = white;
     }
 
-
-
-
-
-    // for (let i = arrLength - 1; i >= 0; i--) {
-    //     swap2(arr, 0, i);
-    //     heapifyAll(Array.from(arr).slice(0, i));
-    // }
-
-    // console.log(sortedArr.map(x => x.style.height))
+    for (let i = arrLength - 1; i >= 0; i--) {
+        swap2(arr, 0, i);
+        heapifyAll(Array.from(arr).slice(0, i));
+    }
 
     // for (let i = 0; i < sortedArr.length; i++) {
     //     $container.insertBefore(sortedArr[i], $container.childNodes[i]);
