@@ -1,7 +1,5 @@
 # Sorting Visualiser
-A visualiser for the some of the more popular sorting algorithms.
-
-*Pure js functions can be found in public/algo-pure-js*
+A visualiser for the some of the more popular sorting algorithms (the pure js functions can be found in the folder */public/algo-pure-js*).
 
 #### Current:
 - quick sort
@@ -19,7 +17,7 @@ A visualiser for the some of the more popular sorting algorithms.
 
 If you would like to see how exactly the algorithm works, you can set the slider to the minimum. That gives you 10 bars and a really slow animation speed.
 
-#### Tips for creating the visualisation:
+#### Tips:
 - Never start with the entire function; always start with the helper functions. Run it once on an isolated array and see if the function and DOM works as expected.
 - After that, start adding in the colours and async/await
 - At first, I coded the visuals by shifting HTML elements around. That, I found, gave lots of problems because sometimes you would have to clone the elements and they would get 'lost', and you would have a hard time selecting what you want. This is why I think it is far better to code the visuals by modifying the HTML elements' attributes.
